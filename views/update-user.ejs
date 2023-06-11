@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+</head>
+<body>
+    <div id="side-menu"><%- include('./partials/header.ejs') %></div>
+    <div id="background"></div>
+    <div id="submit-info-body">
+        <div class="submit-info-main">
+            <% userinfo.forEach( st => { %>
+            <div class="list-ui"><div class="row-ui">User ID</div><div class="row-ui-data"><span><%= st.id %></span></div></div>
+            <form id="myForm" data-stid="<%= st.id %>">
+                <div class="list-ui"><div class="row-ui">Name</div><div class="input-data-holder"><input type="text" name="name" class="input-data" id="name" placeholder="Name"></div></div>
+                <div class="list-ui"><div class="row-ui">Surname</div><div class="input-data-holder"><input type="text" name="surname" class="input-data" id="surname" placeholder="Surname"></div></div>
+                <div class="list-ui"><div class="row-ui">Email</div><div class="input-data-holder"><input type="email" name="email" class="input-data" id="email" placeholder="Email"></div></div>
+                <div class="list-ui"><div class="row-ui">Orders</div><div class="input-data-holder"><input type="count" name="count" class="input-data" id="count" placeholder="Orders"></div></div>
+                <div class="list-ui"><div class="row-ui"></div><div class="row-ui-data"><input type="submit" value="Submit" class="submit-data"></div></div>    
+            </form>     
+        </div>
+    </div>
+    <%})%>
+
+    <script>
+            document.getElementById("myForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
+
+            // Get form data
+            var formData = new FormData(this);
+            const stid = e.target.dataset.stid
+            const endpoint = `/users/${stid}`
+            //Create an object to hold the request headers
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+            //Create the request object
+            var request = new Request(endpoint, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify(Object.fromEntries(formData)) // Convert form data to JSON
+            });
+
+            // Send the request
+            fetch(request)
+                .then(response => {
+                    if (response.ok) {
+                        // Request was successful
+                        console.log("Data sent successfully!");
+                        window.location.href = '/users'
+                    } else {
+                        // Request failed
+                        console.log("Error: " + response.status);
+                    }
+                })
+                .catch(error => {
+                    // Request error
+                    console.log("Error: " + error);
+                });
+        });
+
+    </script>    
+</body>
+</html>

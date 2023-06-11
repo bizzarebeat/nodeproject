@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search</title>
+</head>
+<body>
+    <div id="side-menu"><%- include('./partials/header.ejs') %></div>
+    <div id="background"></div>
+    <div id="submit-info-body">
+        <div class="submit-info-main">
+            <form action="/search" method="POST">
+                <div class="list-search"><div class="row-ui">Enter Tracking</div><div class="input-data-holder"><input type="text" name="tracking" id="" class="input-data" placeholder="Tracking"></div></div>
+                <div class="list-ui"><div class="row-ui"></div><div class="row-ui-data"><button class="submit-data">Submit</button></div></div>    
+            </form>     
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Info</title>
+    <link href= "./../public/assets/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="users">
+
+    <div id="side-menu"><%- include('./partials/header.ejs') %></div>
+    <div id="background"></div>
+    <div id="user-info-body">
+    <% userinf.forEach(st => { %>
+        <div data-stid="<%= st.id%>" class="user-info-main">
+            <div class="list-ui"><div class="row-ui">User ID</div><div class="row-ui-data"><span><%= st.id %></span></div></div>
+            <div class="list-ui"><div class="row-ui">Name</div><div class="row-ui-data"><span><%= st.name %></span></div></div>
+            <div class="list-ui"><div class="row-ui">Surname</div><div class="row-ui-data"><span><%= st.surname %></span></div></div>
+            <div class="list-ui"><div class="row-ui">Email</div><div class="row-ui-data"><span><%= st.email %></span></div></div>
+        </div>
+    <%})%>    
+    <div id="user-info-caption">
+        <div class="caption-headers-ui">Order ID</div>
+        <div class="caption-headers-ui">Tracking</div>
+        <div class="caption-headers-ui">Status</div>
+    </div>    
+    <% orderinfo.forEach(st => { %>
+        <div data-stid="<%= st.id%>" class="user-info-list">
+            <div class="list-id"><span><%= st.id %></span></div>
+            <div class="list-name"><span><%= st.tracking %></span></div>
+            <%let stt = st.status == 1 ? 'Active' : 'Delivered'%>
+            <div class="list-email"><%= stt %></div>
+        </div>
+    <%})%>
+    </div>  
+</body>
+</html>

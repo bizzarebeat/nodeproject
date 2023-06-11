@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Info</title>
+</head>
+<body>
+    <div id="side-menu"><%- include('./partials/header.ejs') %></div>
+    <div id="background"></div>
+    <div id="user-info-body">
+    <% orderInfo.forEach(st => { %>
+        <div data-stid="<%= st.id%>" class="user-info-main">
+            <div class="list-ui"><div class="row-ui">Order ID</div><div class="row-ui-data"><span><%= st.id %></span></div></div>
+            <div class="list-ui"><div class="row-ui">Tracking</div><div class="row-ui-data"><span><%= st.tracking %></span></div></div>
+            <div class="list-ui"><div class="row-ui">Client</div><div class="row-ui-data"><span><%= st.client %></span></div></div>
+            <% let stt = st.status == 1 ? 'Active' : 'Delivered'%>
+            <div class="list-ui"><div class="row-ui">Status</div><div class="row-ui-data" data-stt="<%= st.status%>"><span><%= stt %></span></div></div>            
+        </div>
+    </div>
+    <%})%>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <link href= "./../public/assets/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="users">
+
+    <div id="side-menu"><%- include('./partials/header.ejs') %></div>
+    <div id="background"></div>
+    <div id="page-body">
+    <div id="users-body">
+    <div id="users-table">
+        <div id="caption">
+            <div class="caption-headers">ID</div>
+            <div class="caption-headers">Name</div>
+            <div class="caption-headers">Surname</div>
+            <div class="caption-headers">Email</div>
+            <div class="caption-headers">Orders</div>
+        </div>
+        <% users.forEach( (st) => { %>
+        <div data-stid="<%= st.id%>" class="user-list">
+            <div class="list-id"><span><%= st.id %></span></div>
+            <div class="list-name"><span><%= st.name %></span></div>
+            <div class="list-surname"><span><%= st.surname %></span></div>
+            <div class="list-email"><%= st.email %></div>
+            <div class="list-count"><%= st.count %></div>
+        </div>
+        <div class="user-buttons">
+            <button data-stid="<%= st.id%>" class="delete-user">Delete User</button>
+            <button data-stid="<%= st.id%>" class="update-user">Update User</button>
+        </div>            
+        <%})%>
+    </div>
+    </div>
+    </div>        
+        <script>
+            const deletes = document.querySelectorAll('button.delete-user')
+            deletes.forEach( a => {
+                a.addEventListener('click', (e) => {
+                    
+                    const stid = e.target.dataset.stid
+                    const endpoint = `/users/${stid}`
+                    fetch(endpoint, {method: 'DELETE',})
+                    .then(response => { window.location.reload()}) 
+                    .catch(error => {
+                            console.error('Request failed:', error);
+                    })
+                })
+            })
+
+            const updates = document.querySelectorAll('button.update-user')
+            updates.forEach( a => {
+                a.addEventListener('click', (e) => {
+                    
+                    const stid = e.target.dataset.stid
+                    const endpoint = `/users/upd/${stid}`
+                    fetch(endpoint, {method: 'GET',})
+                    .then( response =>{
+                        if (response.status = 200) {
+                            window.location.href = endpoint
+                        } else { console.log('error')}
+                    })
+                })
+            })
+
+            const prints = document.querySelectorAll('div.user-list')
+            prints.forEach( a => {
+                a.addEventListener('click', (e) => {
+                    
+                    const stid = a.dataset.stid
+                    const endpoint = `/users/${stid}`
+                    fetch(endpoint, {method: 'GET',})
+                    .then( response =>{
+                        if (response.status = 200) {
+                            window.location.href = endpoint
+                        } else { console.log('error')}
+                    })
+                })
+            })
+
+        </script>
+
+</body>
+</html>

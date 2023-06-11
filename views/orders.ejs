@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <link href= "./../public/assets/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="users">
+
+    <div id="side-menu"><%- include('./partials/header.ejs') %></div>
+    <div id="background"></div>
+    <div id="page-body">
+        <div id="users-body">
+        <div id="users-table">
+            <div id="caption">
+                <div class="caption-headers">ID</div>
+                <div class="caption-headers">Tracking</div>
+                <div class="caption-headers">Client</div>
+                <div class="caption-headers">Status</div>
+            </div>
+            <% orders.forEach(ord => { %>
+            <div data-stid="<%= ord.id%>" class="order-list">
+                <div class="list-id"><span><%= ord.id %></span></div>
+                <div class="list-name"><span><%= ord.tracking %></span></div>
+                <div class="list-surname"><span><%= ord.client %></span></div>
+                <% let stt = ord.status == 1 ? 'Active' : 'Delivered'%>
+                <div class="order-status" data-stt="<%= ord.status%>"><%= stt %></div>
+            </div>
+            <div class="user-buttons">
+                <button data-cl="<%= ord.client %>" data-stid="<%= ord.id%>" class="delete-order">Delete Order</button>
+                <button data-stid="<%= ord.id%>" data-ststat="<%= ord.status%>" class="update-order">Delivered</button>
+            </div>            
+        <%})%>
+        </div>
+        </div>
+    </div>            
+        <script>
+            let divSt = document.querySelectorAll('div.order-status')
+            divSt.forEach( el => {
+                el.dataset.stt == 1 ? el.style.backgroundImage = 'linear-gradient(rgb(255, 211, 211),rgb(252, 170, 170))' : el.style.backgroundImage = 'linear-gradient(rgb(198, 254, 203),rgb(104, 255, 119))'
+            })
+
+            const deletes = document.querySelectorAll('button.delete-order')
+            deletes.forEach( a => {
+                a.addEventListener('click', e => {
+                    
+                    const stid = e.target.dataset.stid
+                    const client = {data: e.target.dataset.cl}
+                    const options = {
+                            method: 'DELETE',
+                            headers: {
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(client)
+                        }
+                    console.log(client)
+                    const endpoint = `/orders/${stid}`
+                    fetch(endpoint, options)
+                    .then(response => window.location.reload()) 
+                    .catch(error => console.error('Request failed:', error))
+                })
+            })
+
+            const hideButton = document.querySelectorAll('button.update-order')
+            hideButton.forEach(btn => {
+                if (btn.dataset.ststat == 2) btn.style.visibility = "Hidden"                  
+            })
+
+            const updates = document.querySelectorAll('button.update-order')
+            updates.forEach( a => {
+                a.addEventListener('click', (e) => {
+                    
+                    const stid = e.target.dataset.stid
+                    const endpoint = `/orders/upd/${stid}`
+                    fetch(endpoint, {method: 'PUT',})
+                    .then(response => window.location.reload())
+                })
+            })
+
+            const prints = document.querySelectorAll('div.order-list')
+            prints.forEach( a => {
+                a.addEventListener('click', (e) => {
+                    
+                    const stid = a.dataset.stid
+                    const endpoint = `/orders/${stid}`
+                    fetch(endpoint, {method: 'GET',})
+                    .then( response =>{
+                        if (response.status = 200) {
+                            window.location.href = endpoint
+                        } else { console.log('error')}
+                    })
+                })
+            })
+
+        </script>
+
+</body>
+</html>
